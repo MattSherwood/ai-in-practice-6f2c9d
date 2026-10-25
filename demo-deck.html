@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI in Practice — Workshop Deck</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#fbfbfa; --fg:#16202b; --muted:#5b6b7b; --accent:#0b5c8a;
+    --accent-soft:#e8f1f7; --warn:#b4430d; --warn-soft:#fdf0e9;
+    --line:#d8dee5; --code:#eef2f5;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    overflow:hidden;
+  }
+  .slide{
+    display:none; position:absolute; inset:0;
+    padding:5.2vh 7vw 9vh 7vw;
+    flex-direction:column; justify-content:center;
+  }
+  .slide.active{display:flex}
+  h1{font-size:clamp(26px,3.6vw,50px); line-height:1.1; margin:0 0 .5em 0; letter-spacing:-.02em}
+  h2{font-size:clamp(20px,2.5vw,34px); line-height:1.15; margin:0 0 .6em 0; letter-spacing:-.01em}
+  h3{font-size:clamp(15px,1.5vw,20px); margin:0 0 .4em 0; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.08em}
+  p,li{font-size:clamp(15px,1.65vw,23px); line-height:1.45; margin:.35em 0}
+  ul{margin:.4em 0; padding-left:1.2em}
+  li{margin:.3em 0}
+  .muted{color:var(--muted)}
+  .kicker{font-size:clamp(12px,1.05vw,15px); text-transform:uppercase; letter-spacing:.14em; color:var(--accent); font-weight:700; margin-bottom:.6em}
+  .big{font-size:clamp(38px,7vw,86px); font-weight:700; line-height:1; letter-spacing:-.03em}
+  .part{display:inline-block; padding:.25em .7em; background:var(--accent-soft); color:var(--accent);
+        border-radius:999px; font-size:clamp(12px,1.1vw,15px); font-weight:700; letter-spacing:.1em; text-transform:uppercase}
+  table{border-collapse:collapse; width:100%; margin:.6em 0}
+  th,td{text-align:left; padding:.38em .6em; border-bottom:1px solid var(--line); font-size:clamp(13px,1.35vw,19px)}
+  th{color:var(--muted); font-weight:600; font-size:clamp(11px,1.05vw,14px); text-transform:uppercase; letter-spacing:.07em}
+  td.num{font-variant-numeric:tabular-nums; font-weight:600}
+  pre{
+    background:var(--code); border-left:4px solid var(--accent); border-radius:4px;
+    padding:.8em 1em; overflow:auto; margin:.5em 0;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:clamp(11px,1.18vw,16px); line-height:1.45;
+  }
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+       background:var(--code); padding:.08em .34em; border-radius:3px; font-size:.92em}
+  .cols{display:flex; gap:3vw; align-items:flex-start}
+  .cols>*{flex:1; min-width:0}
+  .card{border:1px solid var(--line); border-radius:8px; padding:1em 1.2em; background:#fff}
+  .card.good{border-left:5px solid #1f7a4d; background:#f2faf5}
+  .card.bad{border-left:5px solid var(--warn); background:var(--warn-soft)}
+  .demo{border-left:5px solid var(--accent); background:#fff; padding:1em 1.3em; border-radius:8px}
+  .tag{display:inline-block; background:var(--accent); color:#fff; font-size:clamp(10px,.95vw,13px);
+       font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:.22em .6em; border-radius:4px; margin-bottom:.7em}
+  .tag.warn{background:var(--warn)}
+  #counter{position:fixed; right:1.1vw; bottom:1.2vh; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums}
+  #hint{position:fixed; left:1.1vw; bottom:1.2vh; font-size:11px; color:#a8b3bd}
+  .notes{display:none; position:fixed; left:0; right:0; bottom:0; max-height:34vh; overflow:auto;
+         background:#101a23; color:#dfe7ee; padding:1em 2em; font-size:14px; line-height:1.5; z-index:5}
+  .notes b{color:#8fd0ff}
+  body.notes-on .notes{display:block}
+  body.notes-on .slide{padding-bottom:36vh}
+  @media print{
+    body{overflow:visible}
+    .slide{display:flex !important; position:static; page-break-after:always; height:96vh}
+    .notes,#counter,#hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide">
+  <div class="kicker">A two-hour workshop</div>
+  <h1>AI in Practice</h1>
+  <p class="muted" style="font-size:clamp(17px,2vw,27px)">Getting real work done with AI — and knowing when to trust it</p>
+  <p class="muted" style="margin-top:2em; font-size:clamp(13px,1.3vw,17px)">
+    Aeronautical engineering · Small-business operations<br>
+    Arrow keys to advance · <code>n</code> for speaker notes · <code>f</code> fullscreen
+  </p>
+  <aside class="notes"><b>Opening.</b> Do not tour products. The promise: by the end you have three workflows you can use tomorrow. Ask the three questions and write the answers down — use them for the rest of the session.</aside>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h2>At a glance</h2>
+  <table>
+    <tr><th>Part</th><th>Focus</th><th>Time</th></tr>
+    <tr><td>1</td><td>Understand and direct AI — mental models, prompting, verification</td><td class="num">0:00–0:45</td></tr>
+    <tr><td>2</td><td>Engineering with AI — the Breguet range calculator</td><td class="num">0:45–1:15</td></tr>
+    <tr><td>3</td><td>AI for the B&amp;B — guest communications, operations</td><td class="num">1:15–1:35</td></tr>
+    <tr><td>4</td><td>Verification, synthesis, next steps</td><td class="num">1:35–2:00</td></tr>
+  </table>
+  <p class="muted" style="margin-top:.8em">You'll leave having <em>done</em> this, not heard about it.</p>
+  <aside class="notes"><b>Set the frame.</b> Two domains, same skills. Part 1 ends with a live agentic demo of a real engineering tool, which we then take apart in Part 4.</aside>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="part">Part 1</div>
+  <h2 style="margin-top:.6em">Understand and direct AI</h2>
+  <p class="muted">0:00–0:45 · Mental models, prompt refinement, verification</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h2>What these systems are, plainly</h2>
+  <div class="cols">
+    <div class="card good">
+      <h3>Genuinely useful for</h3>
+      <ul>
+        <li>Synthesising and comparing technical material</li>
+        <li>Drafting, transforming, and reviewing code</li>
+        <li>First drafts of documents and procedures</li>
+        <li>Planning multi-step tasks and driving tools</li>
+      </ul>
+    </div>
+    <div class="card bad">
+      <h3>Fluent ≠ correct</h3>
+      <ul>
+        <li>Invents citations that look real</li>
+        <li>Silently uses the wrong units</li>
+        <li>Misses a physical assumption</li>
+        <li>Writes code with a subtle bug that runs</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:1em"><strong>Delegate the work; retain responsibility for the judgment.</strong></p>
+  <aside class="notes">This is the sentence the whole workshop hangs on. Say it now, and come back to it in Part 4.</aside>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="tag">Demo 1</div>
+  <h2>A deliberately thin prompt</h2>
+  <pre>Explain how to optimize an airfoil for a low-speed UAV.</pre>
+  <p class="muted">Ask: is it technically useful? What assumptions are missing? Does it separate
+  max-lift from min-drag from a mission objective?</p>
+  <aside class="notes"><b>Ask him to critique before you say anything.</b> Write his objections on paper — you will use them as the entry point to Demo 2.</aside>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="tag">Demo 2</div>
+  <h2>Same task, with engineering context</h2>
+  <div class="cols">
+    <div>
+      <ul style="font-size:clamp(13px,1.35vw,19px)">
+        <li>Role: critical aerodynamics research assistant</li>
+        <li>Objectives, constraints, competing trade-offs</li>
+        <li>Re, transition, separation, roughness sensitivity</li>
+        <li>CFD domain, BCs, turbulence + transition modelling, mesh convergence</li>
+        <li>Validation data and uncertainty checks</li>
+        <li>Separate principles from assumptions; invent nothing</li>
+        <li>End with the five questions you need answered</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>The point</h3>
+      <p style="font-size:clamp(14px,1.5vw,21px)">Not "longer prompts are better."</p>
+      <p class="muted" style="font-size:clamp(13px,1.35vw,19px)">Context + objective + constraints +
+      output format make a result <em>evaluable</em>.</p>
+    </div>
+  </div>
+  <aside class="notes">Debrief: which parts could he act on immediately? Which need checking against published data? What changes if the objective is endurance rather than max L/D?</aside>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h2>The capability ladder</h2>
+  <table>
+    <tr><th>Level</th><th>What it does</th></tr>
+    <tr><td>Chat assistant</td><td>Answers questions, generates content</td></tr>
+    <tr><td>Tool-using assistant</td><td>Searches, reads files, executes code</td></tr>
+    <tr><td><strong>Agentic workflow</strong></td><td><strong>Plans, executes multiple steps, checks results, adapts within limits</strong></td></tr>
+  </table>
+  <p class="muted" style="margin-top:.8em">Let's stop describing the third row and watch it.</p>
+  <aside class="notes">Transition line: "Let's watch what a system that takes verification seriously actually looks like."</aside>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="tag">Live demo · DAFoam</div>
+  <h2>An agent that designs</h2>
+  <div class="demo">
+    <p style="margin:.2em 0">DAFoam is an open-source CFD and optimisation platform built on OpenFOAM.
+    Its agent layer exposes engineering workflows over <strong>MCP</strong> — a standard way for an AI
+    client to call external tools.</p>
+  </div>
+  <p class="muted" style="margin-top:1em; font-size:clamp(14px,1.5vw,20px)">
+    Running here, on this laptop. A full mesh + flow solution in about four minutes.</p>
+  <aside class="notes"><b>The hook — ask before you type:</b> "Between an AI understanding your request and a mesh you'd sign off on, what sits in between?" Let him list meshing, convergence, quality, assumptions. Then type the prompt.</aside>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="tag">Demo · what the model can see</div>
+  <h2>The action space is a closed list</h2>
+  <div class="cols">
+    <div class="card"><div class="big">14</div><p class="muted">skills across airfoil, wing, aircraft</p></div>
+    <div class="card"><div class="big">5</div><p class="muted">predefined workflow scenarios</p></div>
+  </div>
+  <p style="margin-top:1em">The model cannot invent a physics method. It can only
+  <strong>select</strong> from this catalogue and <strong>parameterise</strong> it.</p>
+  <aside class="notes">Point at the returned skill list on screen. This is the anti-hallucination argument, demonstrated rather than asserted: the model's freedom is bounded by a fixed schema.</aside>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="tag warn">Demo · the guardrail</div>
+  <h2>It refused to skip a step</h2>
+  <pre>{
+  "status": "workflow_order_error",
+  "message": "Cannot call `verify_workflow` … before
+              `get_skill_input_info` has been called.",
+  "required_action": "Call `get_skill_input_info`, use its
+              returned `input_info` to build `payload.cases`,
+              then retry `verify_workflow`.",
+  "next_tool_call": { "tool": "get_skill_input_info", … }
+}</pre>
+  <p>Not a vague error — a <strong>machine-readable refusal with a remedy</strong>.</p>
+  <aside class="notes"><b>Your best 30 seconds.</b> Tell the story: you called verification out of order during setup and it refused you. "That's the difference between an AI that suggests verification and one that enforces it." The full transcript is in demo_transcript.json.</aside>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="tag">Demo · the case</div>
+  <h2>What is actually being computed</h2>
+  <table>
+    <tr><th>Setting</th><th>Value</th><th>Meaning</th></tr>
+    <tr><td>Airfoil</td><td>NACA 2412</td><td>2% camber, 12% thick</td></tr>
+    <tr><td>Angle of attack</td><td class="num">2°</td><td>nose-up tilt</td></tr>
+    <tr><td>Mach</td><td class="num">0.15</td><td>~51 m/s, incompressible</td></tr>
+    <tr><td>Reynolds</td><td class="num">1 × 10⁶</td><td>small aircraft / glider scale</td></tr>
+    <tr><td>Mesh</td><td class="num">6 000 cells</td><td>coarse — a sanity-check mesh</td></tr>
+    <tr><td>Wall treatment</td><td class="num">y⁺ ≈ 30</td><td>boundary layer modelled, not resolved</td></tr>
+    <tr><td>Turbulence</td><td>Spalart–Allmaras</td><td>fully turbulent, no transition</td></tr>
+  </table>
+  <p class="muted">2D section · steady RANS · 427 iterations · 4 min 16 s</p>
+  <aside class="notes">While this runs (~4 min), this is the slide to talk over. Say plainly: 2D section, not a wing; steady; fully turbulent. Name the limits before he finds them.</aside>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h2>The result</h2>
+  <table>
+    <tr><th>Quantity</th><th>Value</th><th>Meaning</th></tr>
+    <tr><td>C<sub>L</sub></td><td class="num">0.402</td><td>lift coefficient</td></tr>
+    <tr><td>C<sub>D</sub></td><td class="num">0.0151</td><td>drag coefficient</td></tr>
+    <tr><td>C<sub>M</sub></td><td class="num">−0.041</td><td>nose-down moment (¼-chord)</td></tr>
+    <tr><td>L/D</td><td class="num">26.6</td><td>lift-to-drag ratio</td></tr>
+  </table>
+  <p class="muted">Residuals dropped 6.9 (pressure) / 7.5 (streamwise) / 8.7 (turbulence) orders;
+  the last 100 iterations moved C<sub>D</sub> by 0.14%.</p>
+  <aside class="notes">The solution is genuinely settled — not still drifting. But settled is not the same as correct; that is the next slide.</aside>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <h2>Three checks — two pass, one fails</h2>
+  <div class="card good">
+    <h3>1 · Lift is believable ✓</h3>
+    <p>Zero-lift ≈ −2°; a 2D section gains ≈0.11/degree →
+    <code>0.11 × (2 + 2) ≈ 0.44</code>. Measured <strong>0.402</strong> — within 9%.</p>
+  </div>
+  <div class="card bad" style="margin-top:.7em">
+    <h3>2 · Drag is not believable ✗</h3>
+    <p>L/D = 26.6. A clean NACA 2412 at this Reynolds number should reach <strong>50–70</strong>.
+    Coarse mesh + y⁺30 wall functions + fully turbulent model → roughly double the drag.</p>
+  </div>
+  <div class="card" style="margin-top:.7em">
+    <h3>3 · One residual looks alarming — probably benign</h3>
+    <p>The lateral velocity only dropped 1.1 orders. In 2D that component is ≈0, so its
+    residual is numerical noise. <em>Probably.</em> I would hand that question to an engineer.</p>
+  </div>
+  <aside class="notes"><b>Land this line:</b> "Same run, same confident formatting. One number I'd sign, one I wouldn't." This is the entire Part 4 thesis, delivered by the software itself.</aside>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <h2>What this does <em>not</em> prove</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li>2D only — no wingtips, no spanwise flow</li>
+        <li>Steady — nothing about stall or separation</li>
+        <li>Fully turbulent — wrong near transition</li>
+        <li>One angle of attack — no lift curve, no drag polar</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li>No mesh-independence study</li>
+        <li>No experimental validation</li>
+        <li>y⁺30 cannot support drag claims</li>
+        <li>The turbulence model is an <strong>assumption, not physics</strong></li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:1em"><strong>"The AI drove a validated pipeline." Not "the AI did CFD."</strong></p>
+  <aside class="notes">Switch to the plot tab here: pressure contours and the Cp distribution. Point at the suction peak. Then hand back to Part 2.</aside>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <div class="part">Part 2</div>
+  <h2 style="margin-top:.6em">Engineering with AI</h2>
+  <p class="muted">0:45–1:15 · Python, the Breguet range equation, and testing</p>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <h2>Breguet range — idealised cruise</h2>
+  <p style="font-size:clamp(20px,2.6vw,34px); text-align:center; margin:1em 0">
+    R = (V / (g·c<sub>m</sub>)) · (L/D) · ln(m<sub>i</sub> / m<sub>f</sub>)
+  </p>
+  <table>
+    <tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr>
+    <tr><td>V</td><td>true airspeed</td><td>m/s</td></tr>
+    <tr><td>c<sub>m</sub></td><td>mass-based TSFC</td><td>kg/(N·s)</td></tr>
+    <tr><td>L/D</td><td>lift-to-drag ratio</td><td>–</td></tr>
+    <tr><td>m<sub>i</sub>, m<sub>f</sub></td><td>initial, final cruise mass</td><td>kg</td></tr>
+  </table>
+  <p class="muted">Why <code>g</code>? TSFC is per unit <em>thrust</em>, a force. Converting to
+  per unit <em>weight</em> brings in g. Mixing conventions is the classic units bug.</p>
+  <aside class="notes">Assumptions: constant V, TSFC and L/D. A simplified cruise model, not a full mission prediction.</aside>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <h2>Test case — and what to expect</h2>
+  <table>
+    <tr><th>V</th><th>L/D</th><th>TSFC</th><th>m<sub>i</sub></th><th>m<sub>f</sub></th><th>Expected R</th></tr>
+    <tr><td class="num">230 m/s</td><td class="num">17</td><td class="num">1.7×10⁻⁵</td>
+        <td class="num">50 000 kg</td><td class="num">40 000 kg</td><td class="num">≈ 5 233 km</td></tr>
+  </table>
+  <p>With <code>g = 9.80665</code> the exact value is <strong>5 233.5 km</strong>.
+  If you see <strong>523 km</strong> or <strong>52 310 km</strong>, stop — that's a unit slip.</p>
+  <div class="card" style="margin-top:.8em">
+    <h3>Now introduce a bug</h3>
+    <p>Change <code>log(m_i/m_f)</code> to <code>log(m_f/m_i)</code> → range becomes
+    <strong>−5 233 km</strong>. Ask him to diagnose it <em>before</em> asking for a fix.</p>
+  </div>
+  <aside class="notes">The engineer must know what properties the answer should satisfy. That knowledge is what catches the bug — not the AI.</aside>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <h2>Four verification tests</h2>
+  <table>
+    <tr><th>Test</th><th>Question</th></tr>
+    <tr><td>Dimensional consistency</td><td>Do the units reduce to distance?</td></tr>
+    <tr><td>Physical plausibility</td><td>Can positive fuel burn over positive range give negative range?</td></tr>
+    <tr><td>Monotonicity</td><td>Does raising L/D always raise range?</td></tr>
+    <tr><td>Independent calculation</td><td>Does a separate spreadsheet agree?</td></tr>
+  </table>
+  <p class="muted">Passing tests proves the code satisfies <em>those</em> tests.
+  It does not prove the model fits the aircraft or the mission.</p>
+  <aside class="notes">Do dimensional consistency and the independent calculation live; assign monotonicity as a five-minute extension.</aside>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <div class="part">Part 3</div>
+  <h2 style="margin-top:.6em">AI for the B&amp;B</h2>
+  <p class="muted">1:15–1:35 · Guest communications and operations</p>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <h2>Pre-arrival email</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>The prompt must forbid invention</h3>
+      <p style="font-size:clamp(13px,1.3vw,18px)">Warm, personal, under 180 words.
+      Include arrival-time confirmation, the historic centre and Rio Pardo waterfront,
+      Ilha de Atalaia, and an offer to arrange activities.</p>
+      <p class="muted" style="font-size:clamp(12px,1.2vw,16px)"><strong>Do not invent</strong> facilities,
+      check-in arrangements, restaurants, transport or booking details — use placeholders.</p>
+    </div>
+    <div class="card good">
+      <h3>Then he adds the 20% that matters</h3>
+      <p style="font-size:clamp(13px,1.3vw,18px)">Two details from the actual business: the property's
+      character and one recommendation he personally trusts.</p>
+      <p class="muted" style="font-size:clamp(12px,1.2vw,16px)">AI drafts 80%. The owner supplies authenticity.</p>
+    </div>
+  </div>
+  <aside class="notes">Ask for the Brazilian Portuguese translation as the closing step — and ask whether the warmth survived. Vocabulary is the easy part; register is not.</aside>
+</section>
+
+<!-- 21 -->
+<section class="slide">
+  <h2>Answering a negative review</h2>
+  <div class="card bad">
+    <p style="font-style:italic">"The room was comfortable, but check-in was confusing and we couldn't
+    get a clear answer when we messaged the property."</p>
+  </div>
+  <ul>
+    <li>Acknowledge without becoming defensive; thank them for the feedback</li>
+    <li>Mention the process being reviewed — do not claim it is already fixed</li>
+    <li>No excuses, no unauthorised compensation, no revealing booking details</li>
+    <li>60–90 words · then ask for a warmer version and a more concise one</li>
+  </ul>
+  <aside class="notes">The privacy point is the important one: a public reply must not disclose who stayed, when, or what they paid.</aside>
+</section>
+
+<!-- 22 -->
+<section class="slide">
+  <div class="part">Part 4</div>
+  <h2 style="margin-top:.6em">Verification and next steps</h2>
+  <p class="muted">1:35–2:00 · Establish boundaries, choose a project</p>
+</section>
+
+<!-- 23 -->
+<section class="slide">
+  <h2>Same failure, two domains</h2>
+  <div class="cols">
+    <div class="card bad">
+      <h3>Engineering</h3>
+      <p>The script passes its tests but uses a fuel-consumption convention that doesn't match
+      the engine data.</p>
+      <p class="muted">Runs fine. Looks reasonable. Unit tests pass.</p>
+    </div>
+    <div class="card bad">
+      <h3>Hospitality</h3>
+      <p>A beautifully written email invents a restaurant's opening time. A review reply promises
+      a refund nobody authorised.</p>
+      <p class="muted">Reads perfectly. Still wrong.</p>
+    </div>
+  </div>
+  <p style="margin-top:1em"><strong>The output is convincing, but a critical assumption is wrong.</strong></p>
+  <aside class="notes">Bridge straight back to the DAFoam demo: lift was fine, drag was double, and nothing about the formatting told you which was which.</aside>
+</section>
+
+<!-- 24 -->
+<section class="slide">
+  <h2>A practical verification framework</h2>
+  <table>
+    <tr><th>#</th><th>Check</th><th>Question</th></tr>
+    <tr><td>1</td><td>Verify the objective</td><td>Is it solving the actual problem, or a look-alike?</td></tr>
+    <tr><td>2</td><td>Verify assumptions and units</td><td>Are definitions, inputs and constraints consistent?</td></tr>
+    <tr><td>3</td><td>Test independently</td><td>Analytical estimate, known case, external reference, real records?</td></tr>
+    <tr><td>4</td><td>Check the evidence</td><td>Do the citations and local details survive a source check?</td></tr>
+    <tr><td>5</td><td>Retain control</td><td>Human approval for consequential decisions and outbound messages</td></tr>
+  </table>
+  <aside class="notes">Step 5 is the one people skip. It is also the one that decides whether a mistake is embarrassing or expensive.</aside>
+</section>
+
+<!-- 25 -->
+<section class="slide">
+  <h2>Take-home: the AI field guide</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Six ingredients of a prompt</h3>
+      <ol style="font-size:clamp(13px,1.35vw,19px)">
+        <li>Role</li><li>Objective</li><li>Context</li>
+        <li>Constraints</li><li>Output format</li><li>Verification</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Five rules</h3>
+      <ul style="font-size:clamp(13px,1.35vw,19px)">
+        <li>Confident language is a claim, not evidence</li>
+        <li>Running code ≠ correct code</li>
+        <li>Verify facts at the source</li>
+        <li>Keep sensitive data out of unapproved tools</li>
+        <li>Human approval for consequential actions</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:.8em">Three workflows to learn first: research · engineering · operations</p>
+  <aside class="notes">Hand him docs/GLOSSARY.md too — one line per term, so a question next week doesn't stall him.</aside>
+</section>
+
+<!-- 26 -->
+<section class="slide">
+  <h2>Three commitments for the next seven days</h2>
+  <ol style="font-size:clamp(16px,1.9vw,26px)">
+    <li><strong>One daily use</strong> — a real task, every day, for a week</li>
+    <li><strong>One engineering experiment</strong> — small, with a documented verification process</li>
+    <li><strong>One hospitality improvement</strong> — implement it and measure the time saved</li>
+  </ol>
+  <p class="muted" style="margin-top:1em">Success is not how many prompts you write. It is a better result,
+  less time, or fewer errors — without losing quality.</p>
+  <aside class="notes">Offer the 30-minute follow-up seven days out, with a review checklist for the engineering experiment and the B&amp;B workflow.</aside>
+</section>
+
+<div id="hint">← → advance · n notes · f fullscreen</div>
+<div id="counter"></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  let i = 0;
+  function show(n, push){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    // Deep links: #12 jumps straight to slide 12, so a presenter can say
+    // "go to slide 12" and the audience lands there on their own screen.
+    if (push !== false) history.replaceState(null, '', '#' + (i + 1));
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
+    else if (e.key === 'n' || e.key === 'N') { document.body.classList.toggle('notes-on'); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+  addEventListener('hashchange', () => {
+    const n = parseInt(location.hash.replace('#', ''), 10);
+    if (Number.isFinite(n)) show(n - 1, false);
+  });
+  const startAt = parseInt(location.hash.replace('#', ''), 10);
+  show(Number.isFinite(startAt) ? startAt - 1 : 0);
+</script>
+</body>
+</html>
