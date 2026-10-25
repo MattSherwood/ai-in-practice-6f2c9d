@@ -56,8 +56,33 @@
   .tag{display:inline-block; background:var(--accent); color:#fff; font-size:clamp(10px,.95vw,13px);
        font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:.22em .6em; border-radius:4px; margin-bottom:.7em}
   .tag.warn{background:var(--warn)}
-  #counter{position:fixed; right:1.1vw; bottom:1.2vh; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums}
-  #hint{position:fixed; left:1.1vw; bottom:1.2vh; font-size:11px; color:#a8b3bd}
+  #hint{position:fixed; left:1.1vw; bottom:2.8vh; font-size:11px; color:#a8b3bd}
+  /* On-screen navigation: buttons + slide selector, so the deck is usable by
+     mouse/touch without knowing the keyboard shortcuts. */
+  #controls{
+    position:fixed; right:1.1vw; bottom:2.4vh; z-index:6;
+    display:flex; align-items:center; gap:.45em;
+    background:rgba(255,255,255,.94); border:1px solid var(--line);
+    border-radius:999px; padding:.32em .55em;
+    box-shadow:0 2px 12px rgba(0,0,0,.07);
+    opacity:.62; transition:opacity .18s ease;
+  }
+  #controls:hover, #controls:focus-within{opacity:1}
+  #controls button{
+    width:2em; height:2em; padding:0; flex:none;
+    font-size:17px; line-height:1; cursor:pointer;
+    color:var(--fg); background:#fff; border:1px solid var(--line); border-radius:50%;
+  }
+  #controls button:hover:not(:disabled){background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  #controls button:disabled{opacity:.32; cursor:default}
+  #controls select{
+    font-size:12.5px; max-width:36vw; cursor:pointer;
+    color:var(--fg); background:#fff; border:1px solid var(--line);
+    border-radius:6px; padding:.28em .4em;
+  }
+  #counter{font-size:11.5px; color:var(--muted); min-width:3.6em; text-align:center;
+           font-variant-numeric:tabular-nums; flex:none}
+  body.notes-on #controls{bottom:35.6vh}
   .notes{display:none; position:fixed; left:0; right:0; bottom:0; max-height:34vh; overflow:auto;
          background:#101a23; color:#dfe7ee; padding:1em 2em; font-size:14px; line-height:1.5; z-index:5}
   .notes b{color:#8fd0ff}
@@ -66,7 +91,7 @@
   @media print{
     body{overflow:visible}
     .slide{display:flex !important; position:static; page-break-after:always; height:96vh}
-    .notes,#counter,#hint{display:none}
+    .notes,#controls,#hint{display:none}
   }
 </style>
 </head>
@@ -467,21 +492,54 @@
 </section>
 
 <div id="hint">← → advance · f fullscreen</div>
-<div id="counter"></div>
+
+<div id="controls">
+  <button id="prev" type="button" aria-label="Previous slide" title="Previous (←)">‹</button>
+  <select id="jump" aria-label="Go to slide" title="Jump to slide"></select>
+  <button id="next" type="button" aria-label="Next slide" title="Next (→)">›</button>
+  <span id="counter" aria-live="polite"></span>
+</div>
 
 <script>
   const slides = Array.from(document.querySelectorAll('.slide'));
   const counter = document.getElementById('counter');
+  const jump = document.getElementById('jump');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
   let i = 0;
+
+  // Build the slide selector from each slide's own heading, so it reads as an
+  // agenda ("13 · Three checks — two pass, one fails") rather than bare numbers.
+  slides.forEach((s, k) => {
+    const h = s.querySelector('h1, h2');
+    const title = (h ? h.textContent : 'Slide ' + (k + 1)).replace(/\s+/g, ' ').trim();
+    const opt = document.createElement('option');
+    opt.value = String(k);
+    opt.textContent = String(k + 1).padStart(2, '0') + ' · ' + title;
+    jump.appendChild(opt);
+  });
+
   function show(n, push){
     i = Math.max(0, Math.min(slides.length - 1, n));
     slides.forEach((s, k) => s.classList.toggle('active', k === i));
     counter.textContent = (i + 1) + ' / ' + slides.length;
+    jump.value = String(i);
+    prevBtn.disabled = (i === 0);
+    nextBtn.disabled = (i === slides.length - 1);
     // Deep links: #12 jumps straight to slide 12, so a presenter can say
     // "go to slide 12" and the audience lands there on their own screen.
     if (push !== false) history.replaceState(null, '', '#' + (i + 1));
   }
+
+  jump.addEventListener('change', () => { show(parseInt(jump.value, 10)); jump.blur(); });
+  prevBtn.addEventListener('click', () => { show(i - 1); prevBtn.blur(); });
+  nextBtn.addEventListener('click', () => { show(i + 1); nextBtn.blur(); });
+
   addEventListener('keydown', e => {
+    // Let the selector and buttons handle their own keys when focused.
+    const tag = e.target && e.target.tagName;
+    if (tag === 'SELECT' || tag === 'INPUT') return;
+    if (tag === 'BUTTON' && e.key === ' ') return;
     if (['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)) { e.preventDefault(); show(i + 1); }
     else if (['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)) { e.preventDefault(); show(i - 1); }
     else if (e.key === 'Home') { e.preventDefault(); show(0); }
