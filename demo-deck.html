@@ -79,9 +79,8 @@
   <p class="muted" style="font-size:clamp(17px,2vw,27px)">Getting real work done with AI — and knowing when to trust it</p>
   <p class="muted" style="margin-top:2em; font-size:clamp(13px,1.3vw,17px)">
     Aeronautical engineering · Small-business operations<br>
-    Arrow keys to advance · <code>n</code> for speaker notes · <code>f</code> fullscreen
+    Arrow keys to advance · <code>f</code> for fullscreen
   </p>
-  <aside class="notes"><b>Opening.</b> Do not tour products. The promise: by the end you have three workflows you can use tomorrow. Ask the three questions and write the answers down — use them for the rest of the session.</aside>
 </section>
 
 <!-- 2 -->
@@ -95,7 +94,6 @@
     <tr><td>4</td><td>Verification, synthesis, next steps</td><td class="num">1:35–2:00</td></tr>
   </table>
   <p class="muted" style="margin-top:.8em">You'll leave having <em>done</em> this, not heard about it.</p>
-  <aside class="notes"><b>Set the frame.</b> Two domains, same skills. Part 1 ends with a live agentic demo of a real engineering tool, which we then take apart in Part 4.</aside>
 </section>
 
 <!-- 3 -->
@@ -129,7 +127,6 @@
     </div>
   </div>
   <p style="margin-top:1em"><strong>Delegate the work; retain responsibility for the judgment.</strong></p>
-  <aside class="notes">This is the sentence the whole workshop hangs on. Say it now, and come back to it in Part 4.</aside>
 </section>
 
 <!-- 5 -->
@@ -139,7 +136,6 @@
   <pre>Explain how to optimize an airfoil for a low-speed UAV.</pre>
   <p class="muted">Ask: is it technically useful? What assumptions are missing? Does it separate
   max-lift from min-drag from a mission objective?</p>
-  <aside class="notes"><b>Ask him to critique before you say anything.</b> Write his objections on paper — you will use them as the entry point to Demo 2.</aside>
 </section>
 
 <!-- 6 -->
@@ -165,7 +161,6 @@
       output format make a result <em>evaluable</em>.</p>
     </div>
   </div>
-  <aside class="notes">Debrief: which parts could he act on immediately? Which need checking against published data? What changes if the objective is endurance rather than max L/D?</aside>
 </section>
 
 <!-- 7 -->
@@ -178,7 +173,6 @@
     <tr><td><strong>Agentic workflow</strong></td><td><strong>Plans, executes multiple steps, checks results, adapts within limits</strong></td></tr>
   </table>
   <p class="muted" style="margin-top:.8em">Let's stop describing the third row and watch it.</p>
-  <aside class="notes">Transition line: "Let's watch what a system that takes verification seriously actually looks like."</aside>
 </section>
 
 <!-- 8 -->
@@ -192,7 +186,6 @@
   </div>
   <p class="muted" style="margin-top:1em; font-size:clamp(14px,1.5vw,20px)">
     Running here, on this laptop. A full mesh + flow solution in about four minutes.</p>
-  <aside class="notes"><b>The hook — ask before you type:</b> "Between an AI understanding your request and a mesh you'd sign off on, what sits in between?" Let him list meshing, convergence, quality, assumptions. Then type the prompt.</aside>
 </section>
 
 <!-- 9 -->
@@ -205,7 +198,6 @@
   </div>
   <p style="margin-top:1em">The model cannot invent a physics method. It can only
   <strong>select</strong> from this catalogue and <strong>parameterise</strong> it.</p>
-  <aside class="notes">Point at the returned skill list on screen. This is the anti-hallucination argument, demonstrated rather than asserted: the model's freedom is bounded by a fixed schema.</aside>
 </section>
 
 <!-- 10 -->
@@ -222,7 +214,6 @@
   "next_tool_call": { "tool": "get_skill_input_info", … }
 }</pre>
   <p>Not a vague error — a <strong>machine-readable refusal with a remedy</strong>.</p>
-  <aside class="notes"><b>Your best 30 seconds.</b> Tell the story: you called verification out of order during setup and it refused you. "That's the difference between an AI that suggests verification and one that enforces it." The full transcript is in demo_transcript.json.</aside>
 </section>
 
 <!-- 11 -->
@@ -240,7 +231,6 @@
     <tr><td>Turbulence</td><td>Spalart–Allmaras</td><td>fully turbulent, no transition</td></tr>
   </table>
   <p class="muted">2D section · steady RANS · 427 iterations · 4 min 16 s</p>
-  <aside class="notes">While this runs (~4 min), this is the slide to talk over. Say plainly: 2D section, not a wing; steady; fully turbulent. Name the limits before he finds them.</aside>
 </section>
 
 <!-- 12 -->
@@ -255,7 +245,6 @@
   </table>
   <p class="muted">Residuals dropped 6.9 (pressure) / 7.5 (streamwise) / 8.7 (turbulence) orders;
   the last 100 iterations moved C<sub>D</sub> by 0.14%.</p>
-  <aside class="notes">The solution is genuinely settled — not still drifting. But settled is not the same as correct; that is the next slide.</aside>
 </section>
 
 <!-- 13 -->
@@ -276,7 +265,6 @@
     <p>The lateral velocity only dropped 1.1 orders. In 2D that component is ≈0, so its
     residual is numerical noise. <em>Probably.</em> I would hand that question to an engineer.</p>
   </div>
-  <aside class="notes"><b>Land this line:</b> "Same run, same confident formatting. One number I'd sign, one I wouldn't." This is the entire Part 4 thesis, delivered by the software itself.</aside>
 </section>
 
 <!-- 14 -->
@@ -301,7 +289,6 @@
     </div>
   </div>
   <p style="margin-top:1em"><strong>"The AI drove a validated pipeline." Not "the AI did CFD."</strong></p>
-  <aside class="notes">Switch to the plot tab here: pressure contours and the Cp distribution. Point at the suction peak. Then hand back to Part 2.</aside>
 </section>
 
 <!-- 15 -->
@@ -326,7 +313,6 @@
   </table>
   <p class="muted">Why <code>g</code>? TSFC is per unit <em>thrust</em>, a force. Converting to
   per unit <em>weight</em> brings in g. Mixing conventions is the classic units bug.</p>
-  <aside class="notes">Assumptions: constant V, TSFC and L/D. A simplified cruise model, not a full mission prediction.</aside>
 </section>
 
 <!-- 17 -->
@@ -344,7 +330,6 @@
     <p>Change <code>log(m_i/m_f)</code> to <code>log(m_f/m_i)</code> → range becomes
     <strong>−5 233 km</strong>. Ask him to diagnose it <em>before</em> asking for a fix.</p>
   </div>
-  <aside class="notes">The engineer must know what properties the answer should satisfy. That knowledge is what catches the bug — not the AI.</aside>
 </section>
 
 <!-- 18 -->
@@ -359,7 +344,6 @@
   </table>
   <p class="muted">Passing tests proves the code satisfies <em>those</em> tests.
   It does not prove the model fits the aircraft or the mission.</p>
-  <aside class="notes">Do dimensional consistency and the independent calculation live; assign monotonicity as a five-minute extension.</aside>
 </section>
 
 <!-- 19 -->
@@ -388,7 +372,6 @@
       <p class="muted" style="font-size:clamp(12px,1.2vw,16px)">AI drafts 80%. The owner supplies authenticity.</p>
     </div>
   </div>
-  <aside class="notes">Ask for the Brazilian Portuguese translation as the closing step — and ask whether the warmth survived. Vocabulary is the easy part; register is not.</aside>
 </section>
 
 <!-- 21 -->
@@ -404,7 +387,6 @@
     <li>No excuses, no unauthorised compensation, no revealing booking details</li>
     <li>60–90 words · then ask for a warmer version and a more concise one</li>
   </ul>
-  <aside class="notes">The privacy point is the important one: a public reply must not disclose who stayed, when, or what they paid.</aside>
 </section>
 
 <!-- 22 -->
@@ -432,7 +414,6 @@
     </div>
   </div>
   <p style="margin-top:1em"><strong>The output is convincing, but a critical assumption is wrong.</strong></p>
-  <aside class="notes">Bridge straight back to the DAFoam demo: lift was fine, drag was double, and nothing about the formatting told you which was which.</aside>
 </section>
 
 <!-- 24 -->
@@ -446,7 +427,6 @@
     <tr><td>4</td><td>Check the evidence</td><td>Do the citations and local details survive a source check?</td></tr>
     <tr><td>5</td><td>Retain control</td><td>Human approval for consequential decisions and outbound messages</td></tr>
   </table>
-  <aside class="notes">Step 5 is the one people skip. It is also the one that decides whether a mistake is embarrassing or expensive.</aside>
 </section>
 
 <!-- 25 -->
@@ -472,7 +452,6 @@
     </div>
   </div>
   <p class="muted" style="margin-top:.8em">Three workflows to learn first: research · engineering · operations</p>
-  <aside class="notes">Hand him docs/GLOSSARY.md too — one line per term, so a question next week doesn't stall him.</aside>
 </section>
 
 <!-- 26 -->
@@ -485,10 +464,9 @@
   </ol>
   <p class="muted" style="margin-top:1em">Success is not how many prompts you write. It is a better result,
   less time, or fewer errors — without losing quality.</p>
-  <aside class="notes">Offer the 30-minute follow-up seven days out, with a review checklist for the engineering experiment and the B&amp;B workflow.</aside>
 </section>
 
-<div id="hint">← → advance · n notes · f fullscreen</div>
+<div id="hint">← → advance · f fullscreen</div>
 <div id="counter"></div>
 
 <script>
