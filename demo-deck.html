@@ -104,7 +104,7 @@
   <p class="muted" style="font-size:clamp(17px,2vw,27px)">Getting real work done with AI — and knowing when to trust it</p>
   <p class="muted" style="margin-top:2em; font-size:clamp(13px,1.3vw,17px)">
     Aeronautical engineering · Small-business operations<br>
-    Arrow keys to advance · <code>f</code> for fullscreen
+    <span id="shortcuts">Arrow keys to advance · <code>f</code> fullscreen</span>
   </p>
 </section>
 
@@ -529,7 +529,81 @@
     // Deep links: #12 jumps straight to slide 12, so a presenter can say
     // "go to slide 12" and the audience lands there on their own screen.
     if (push !== false) history.replaceState(null, '', '#' + (i + 1));
+    sendNotes();
   }
+
+  /* ---------------------------------------------------------------- presenter
+     Opens a separate window showing only the current slide's notes, a running
+     clock, and the next slide's title. Intended for a second monitor when the
+     audience does NOT see your screen. State is pushed with postMessage, which
+     works regardless of same-origin restrictions. */
+  let notesWin = null;
+
+  function notesPayload(){
+    const cur = slides[i];
+    const h = cur.querySelector('h1, h2');
+    const nEl = cur.querySelector('.notes');
+    const nx = slides[i + 1];
+    const nxh = nx && nx.querySelector('h1, h2');
+    return {
+      idx: i + 1,
+      total: slides.length,
+      title: h ? h.textContent.replace(/\s+/g, ' ').trim() : 'Slide ' + (i + 1),
+      notes: nEl ? nEl.innerHTML : '',
+      next: nxh ? nxh.textContent.replace(/\s+/g, ' ').trim() : '',
+    };
+  }
+
+  function sendNotes(){
+    if (!notesWin || notesWin.closed) { notesWin = null; return; }
+    try { notesWin.postMessage(notesPayload(), '*'); } catch (err) { /* window gone */ }
+  }
+
+  function openPresenter(){
+    if (notesWin && !notesWin.closed) { notesWin.focus(); sendNotes(); return; }
+    notesWin = window.open('', 'deck-presenter',
+      'width=800,height=660,menubar=no,toolbar=no,location=no');
+    if (!notesWin) {
+      alert('The presenter window was blocked. Allow popups for this page and press p again.');
+      return;
+    }
+    notesWin.document.write(
+      '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Presenter notes</title>' +
+      '<style>' +
+      'body{margin:0;background:#101a23;color:#e8eef4;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;display:flex;flex-direction:column;height:100vh}' +
+      'header{display:flex;justify-content:space-between;align-items:baseline;padding:14px 22px;background:#0b141c;border-bottom:1px solid #223241}' +
+      '#pos{font-weight:700;letter-spacing:.08em;color:#8fd0ff;font-variant-numeric:tabular-nums}' +
+      '#clock{font-variant-numeric:tabular-nums;color:#9fb2c2;font-size:15px}' +
+      'h1{font-size:20px;line-height:1.25;margin:18px 22px 6px;font-weight:650;color:#fff}' +
+      'main{padding:4px 22px 18px;overflow:auto;flex:1;font-size:19px;line-height:1.55;color:#d8e2ea}' +
+      'main b{color:#8fd0ff}main code{background:#1b2b38;padding:.1em .35em;border-radius:3px;font-size:.92em}' +
+      'footer{padding:12px 22px;border-top:1px solid #223241;color:#9fb2c2;font-size:14px;background:#0b141c}' +
+      '.empty{color:#6b7f8f;font-style:italic}' +
+      '</style></head><body>' +
+      '<header><span id="pos">1 / 1</span><span id="clock">00:00</span></header>' +
+      '<h1 id="title">Waiting for the deck…</h1>' +
+      '<main id="notes"></main>' +
+      '<footer id="next"></footer>' +
+      '<script>' +
+      'var started=Date.now();' +
+      'setInterval(function(){var s=Math.floor((Date.now()-started)/1000);' +
+      'document.getElementById("clock").textContent=' +
+      'String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");},1000);' +
+      'window.addEventListener("message",function(e){var d=e.data||{};' +
+      'document.getElementById("pos").textContent=(d.idx||0)+" / "+(d.total||0);' +
+      'document.getElementById("title").textContent=d.title||"";' +
+      'var m=document.getElementById("notes");' +
+      'm.innerHTML=(d.notes&&d.notes.trim())?d.notes:"<p class=\\"empty\\">(no notes for this slide)</p>";' +
+      'document.getElementById("next").textContent=d.next?("Next: "+d.next):"End of deck";});' +
+      '<\/script></body></html>'
+    );
+    notesWin.document.close();
+    // Give the new window a moment to attach its listener before the first push.
+    setTimeout(sendNotes, 250);
+  }
+
+  // Keep the presenter window in step even if a message is dropped during load.
+  setInterval(sendNotes, 2000);
 
   jump.addEventListener('change', () => { show(parseInt(jump.value, 10)); jump.blur(); });
   prevBtn.addEventListener('click', () => { show(i - 1); prevBtn.blur(); });
@@ -545,6 +619,7 @@
     else if (e.key === 'Home') { e.preventDefault(); show(0); }
     else if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
     else if (e.key === 'n' || e.key === 'N') { document.body.classList.toggle('notes-on'); }
+    else if (e.key === 'p' || e.key === 'P') { openPresenter(); }
     else if (e.key === 'f' || e.key === 'F') {
       if (!document.fullscreenElement) document.documentElement.requestFullscreen();
       else document.exitFullscreen();
